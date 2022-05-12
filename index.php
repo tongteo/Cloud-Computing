@@ -5,10 +5,10 @@ $letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 $WON = false;
 $maxLetters = strlen($guess) - 1;
 
-// Cac bo phan
+// Các bộ phận của người cây
 $bodyParts = ["nohead","head","body","hand","hands","leg","legs"];
 
-// Tu khoa ngau nhien
+// Các từ khóa ngẫu nhiên
 $words = [
 	"HAIBATRUNG",
 	"LYNAMDE" , 
@@ -26,20 +26,21 @@ $words = [
 	"HUNGVUONG"
 ];
 
+
 function getCurrentPicture($part){
     return "./images/hangman_". $part. ".png";
 }
 
 
 
-// khoi dong lai tro choi
+// Khởi động lại trò chơi
 function restartGame(){
     session_destroy();
     session_start();
 
 }
 
-// Lay tat ca bo phan nguoi cay
+// Kiểm tra 
 function getParts(){
     global $bodyParts;
     return isset($_SESSION["parts"]) ? $_SESSION["parts"] : $bodyParts;
@@ -48,7 +49,7 @@ function getParts(){
 // Them bo phan vao nguoi cay
 function addPart(){
     $parts = getParts();
-    array_shift($parts);
+    array_shift($parts);//Loại bỏ phần tử đầu tiên của mảng
     $_SESSION["parts"] = $parts;
 }
 

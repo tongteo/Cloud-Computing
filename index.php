@@ -6,7 +6,7 @@ $WON = false;
 $maxLetters = strlen($guess) - 1;
 
 // Các bộ phận của người cây
-$bodyParts = ["nohead","head","body","hand","hands","leg","legs"];
+$bodyParts = ["nohead","head","throat","body","hand","hands","leg","legs"];
 
 // Các từ khóa ngẫu nhiên
 $words = [

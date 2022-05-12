@@ -27,9 +27,6 @@ $words = [
 ];
 
 
-function getCurrentPicture($part){
-    return "./images/hangman_". $part. ".png";
-}
 
 
 
@@ -51,6 +48,11 @@ function addPart(){
     $parts = getParts();
     array_shift($parts);//Loại bỏ phần tử đầu tiên của mảng
     $_SESSION["parts"] = $parts;
+}
+
+
+function getCurrentPicture($part){
+    return "./images/hangman_". $part. ".png";
 }
 
 // Lay bo phan hien tai cua nguoi cay
@@ -181,10 +183,9 @@ if(isset($_GET['kp'])){
 </head>
     <body style="background: deepskyblue">
         
-        <!-- Main app display -->
         <div style="margin: 0 auto; background: #dddddd; width:900px; height:900px; padding:5px; border-radius:3px;">
             
-            <!-- Noi hien thi anh -->
+            <!-- Nơi hiển thị ảnh -->
             <div style="display:inline-block; width: 500px; background:#fff;">
                  <img style="width:100%; display:inline-block;" src="<?php echo getCurrentPicture(getCurrentPart());?>"/>
           
@@ -197,7 +198,7 @@ if(isset($_GET['kp'])){
                     <p style="color: darkred; font-size: 25px;">Bạn đã không đoán được từ khóa :((</p>
                 <?php endif;?>
             </div>
-            
+                    <!-- Nơi hiển thị bảng chữ cái -->
             <div style="float:right; display:inline; vertical-align:top;">
                 <h1>Game đoán chữ</h1>
                 <div style="display:inline-block;">
@@ -207,21 +208,21 @@ if(isset($_GET['kp'])){
                         for($i=0; $i<= $max; $i++){
                             echo "<button type='submit' name='kp' value='". $letters[$i] . "'>".
                             $letters[$i] . "</button>";
-                            if ($i % 7 == 0 && $i>0) {
+                            if ($i % 7 == 0 && $i>0) {//Hiển thị tối đa 7 chữ cái trên 1 dòng
                                echo '<br><br>';
                             }
                             
                         }
                     ?>
                     <br><br>
-                    <!-- Khoi dong lai tro choi -->
+                    <!-- Khởi động lại trò chơi -->
                     <button type="submit" name="start">Tiếp tục chơi</button>
                     </form>
                 </div>
             </div>
             
             <div style="margin-top:20px; padding:15px; background: lightseagreen; color: #fcf8e3">
-                <!-- Hien thi tu nguoi choi doan -->
+                <!-- Hiển thị từ người chơi đoán -->
                 <?php 
                  $guess = getCurrentWord();
                  $maxLetters = strlen($guess) - 1;

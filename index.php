@@ -60,7 +60,6 @@ function getCurrentPart(){
 
 // Lay tu hien tai
 function getCurrentWord(){
-  //  return "DAIHOCBACLIEU"; 
     global $words;
     if(!isset($_SESSION["word"]) && empty($_SESSION["word"])){
         $key = array_rand($words);

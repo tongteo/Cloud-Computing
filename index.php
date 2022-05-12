@@ -27,9 +27,6 @@ $words = [
 ];
 
 
-
-
-
 // Khởi động lại trò chơi
 function restartGame(){
     session_destroy();
@@ -43,7 +40,7 @@ function getParts(){
     return isset($_SESSION["parts"]) ? $_SESSION["parts"] : $bodyParts;
 }
 
-// Them bo phan vao nguoi cay
+// Thêm bộ phận vào người cây
 function addPart(){
     $parts = getParts();
     array_shift($parts);//Loại bỏ phần tử đầu tiên của mảng
@@ -55,17 +52,17 @@ function getCurrentPicture($part){
     return "./images/hangman_". $part. ".png";
 }
 
-// Lay bo phan hien tai cua nguoi cay
+// Lấy bộ phận hiện tại của người cây
 function getCurrentPart(){
     $parts = getParts();
     return $parts[0];
 }
 
-// Lay tu hien tai
+// Lấy từ hiện tại
 function getCurrentWord(){
     global $words;
     if(!isset($_SESSION["word"]) && empty($_SESSION["word"])){
-        $key = array_rand($words);
+        $key = array_rand($words);//Lấy ra 1 phần tử bất kỳ của mảng
         $_SESSION["word"] = $words[$key];
     }
     return $_SESSION["word"];
@@ -73,49 +70,47 @@ function getCurrentWord(){
 
 
 
-// Lay phan hoi tu nguoi choi
+// Trả về mảng rỗng hoặc biến session
 function getCurrentResponses(){
     return isset($_SESSION["responses"]) ? $_SESSION["responses"] : [];
 }
 
-//Them phan hoi
 function addResponse($letter){
     $responses = getCurrentResponses();
-    array_push($responses, $letter);
+    array_push($responses, $letter);//Thêm 1 phần tử vào cuối mảng
     $_SESSION["responses"] = $responses;
 }
 
-// Kiem tra chu cai hop le
+// Kiểm tra tính hợp lệ của chữ cái
 function isLetterCorrect($letter){
     $word = getCurrentWord();
     $max = strlen($word) - 1;
     for($i=0; $i<= $max; $i++){
-        if($letter == $word[$i]){
+        if($letter == $word[$i]){//Kiểm tra tham số truyền vào có trong đáp án hiện tại?
             return true;
         }
     }
     return false;
 }
 
-// Kiem tra tu hop le
+// Kiểm tra từ hợp lệ
 
 function isWordCorrect(){
     $guess = getCurrentWord();
     $responses = getCurrentResponses();
     $max = strlen($guess) - 1;
     for($i=0; $i<= $max; $i++){
-        if(!in_array($guess[$i],  $responses)){
+        if(!in_array($guess[$i],  $responses)){//Kiểm tra biến session không có trong mảng SESSION['word']
             return false;
         }
     }
     return true;
 }
 
-// Kiem tra nguoi cay du bo phan
+// Kiểm tra người cây đầy đủ bộ phận
 
 function isBodyComplete(){
     $parts = getParts();
-    // is the current parts less than or equal to one
     if(count($parts) <= 1){
         return true;
     }
@@ -123,25 +118,22 @@ function isBodyComplete(){
 }
 
 
-// Kiem tra game hoan thanh
 function gameComplete(){
     return isset($_SESSION["gamecomplete"]) ? $_SESSION["gamecomplete"] :false;
 }
 
 
-// Dat game hoan thanh
 function markGameAsComplete(){
     $_SESSION["gamecomplete"] = true;
 }
-
-// Bat dau game moi
+ 
 function markGameAsNew(){
     $_SESSION["gamecomplete"] = false;
 }
 
 
 
-/* Kiem tra nut khoi dong game duoc nhan*/
+/* Kiểm tra nút tiếp tục chơi được nhấn*/
 if(isset($_GET['start'])){
     restartGame();
 }
@@ -150,7 +142,7 @@ if(isset($_GET['start'])){
 
 if(isset($_GET['kp'])){
     $currentPressedKey = isset($_GET['kp']) ? $_GET['kp'] : null;
-    // Tu nhan vao hop le
+    // Từ nhấn vào hợp lệ
     if($currentPressedKey 
     && isLetterCorrect($currentPressedKey)
     && !isBodyComplete()
@@ -158,11 +150,10 @@ if(isset($_GET['kp'])){
         
         addResponse($currentPressedKey);
         if(isWordCorrect()){
-            $WON = true; // game complete
+            $WON = true;
             markGameAsComplete();
         }
     }else{
-        // Treo co nguoi cay :D
         if(!isBodyComplete()){
            addPart(); 
            if(isBodyComplete()){

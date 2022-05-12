@@ -34,19 +34,20 @@ function restartGame(){
 
 }
 
-// Kiểm tra 
+// Trả về biến mảng khi bộ phận chưa tồn tại hoặc mảng bordyParts.
 function getParts(){
     global $bodyParts;
     return isset($_SESSION["parts"]) ? $_SESSION["parts"] : $bodyParts;
 }
 
-// Thêm bộ phận vào người cây
+// Thêm bộ phận vào biến mảng session
 function addPart(){
     $parts = getParts();
-    array_shift($parts);//Loại bỏ phần tử đầu tiên của mảng
+    array_shift($parts);//Loại bỏ phần tử đầu tiên của mảng bodyParts
     $_SESSION["parts"] = $parts;
 }
 
+// Lấy ra hình ảnh hiện tại
 
 function getCurrentPicture($part){
     return "./images/hangman_". $part. ".png";
@@ -58,11 +59,11 @@ function getCurrentPart(){
     return $parts[0];
 }
 
-// Lấy từ hiện tại
+// trả về đáp án hiện tại
 function getCurrentWord(){
     global $words;
     if(!isset($_SESSION["word"]) && empty($_SESSION["word"])){
-        $key = array_rand($words);//Lấy ra 1 phần tử bất kỳ của mảng
+        $key = array_rand($words);//Lấy ra 1 phần tử bất kỳ của mảng đáp án
         $_SESSION["word"] = $words[$key];
     }
     return $_SESSION["word"];
@@ -70,11 +71,12 @@ function getCurrentWord(){
 
 
 
-// Trả về mảng rỗng hoặc biến session
+// Trả về mảng rỗng hoặc từ của người chơi chọn
 function getCurrentResponses(){
     return isset($_SESSION["responses"]) ? $_SESSION["responses"] : [];
 }
 
+//Thêm từ vào mảng đáp án
 function addResponse($letter){
     $responses = getCurrentResponses();
     array_push($responses, $letter);//Thêm 1 phần tử vào cuối mảng
@@ -100,18 +102,18 @@ function isWordCorrect(){
     $responses = getCurrentResponses();
     $max = strlen($guess) - 1;
     for($i=0; $i<= $max; $i++){
-        if(!in_array($guess[$i],  $responses)){//Kiểm tra biến session không có trong mảng SESSION['word']
+        if(!in_array($guess[$i],  $responses)){//Kiểm tra biến session không có trong mảng đáp án.
             return false;
         }
     }
     return true;
 }
 
-// Kiểm tra người cây đầy đủ bộ phận
+// Trả về true khi số lượng phần tử trong mảng 
 
 function isBodyComplete(){
     $parts = getParts();
-    if(count($parts) <= 1){
+    if(count($parts) <= 1){//Số phần tử trong mảng có nhỏ hơn hoặc bằng 1.
         return true;
     }
     return false;

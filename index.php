@@ -31,9 +31,6 @@ function getCurrentPicture($part){
 }
 
 
-function startGame(){
-   
-}
 
 // khoi dong lai tro choi
 function restartGame(){

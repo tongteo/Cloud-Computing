@@ -34,13 +34,13 @@ function restartGame(){
 
 }
 
-// Trả về biến mảng khi bộ phận chưa tồn tại hoặc mảng bordyParts.
+// Trả về biến mảng seesion part khi bộ phận chưa tồn tại hoặc mảng bordyParts.
 function getParts(){
     global $bodyParts;
     return isset($_SESSION["parts"]) ? $_SESSION["parts"] : $bodyParts;
 }
 
-// Thêm bộ phận vào biến mảng session
+// Thêm bộ phận vào biến mảng session part
 function addPart(){
     $parts = getParts();
     array_shift($parts);//Loại bỏ phần tử đầu tiên của mảng bodyParts
@@ -59,7 +59,7 @@ function getCurrentPart(){
     return $parts[0];
 }
 
-// trả về đáp án hiện tại
+// trả về đáp án hiện tại lưu trong mảng session word
 function getCurrentWord(){
     global $words;
     if(!isset($_SESSION["word"]) && empty($_SESSION["word"])){
